@@ -63,7 +63,9 @@ static void FlashConsoleAlert()
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Black;
         Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
-        Console.Write("Alert!!!\nQuery has returned results!!!");
+        Console.Write("Alert!!!");
+        Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2 + 1);
+        Console.Write("Query has returned results!!!");
         Thread.Sleep(500);
 
         Console.ResetColor();
