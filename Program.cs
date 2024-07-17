@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 // ChatGPT wrote the base for this, I improved it
 
@@ -20,6 +20,8 @@ while (!int.TryParse(Console.ReadLine(), out intervalSeconds) || intervalSeconds
 }
 
 Console.WriteLine("Monitoring query results...");
+(int left, int top) = Console.GetCursorPosition();
+Spinner spinner = new(new(left, top));
 
 using var conn = new SqlConnection(connectionString);
 await conn.OpenAsync();
@@ -34,7 +36,12 @@ while (true)
         break;
     }
 
-    await Task.Delay(TimeSpan.FromSeconds(intervalSeconds));
+    var waitUntil = DateTime.Now + TimeSpan.FromSeconds(intervalSeconds);
+    while (DateTime.Now < waitUntil)
+    {
+        spinner.Spin();
+        await Task.Delay(TimeSpan.FromMilliseconds(500));
+    }
 }
 
 static async Task<bool> CheckQueryResultsAsync(SqlConnection conn, string sqlQuery)
